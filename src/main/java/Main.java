@@ -7,20 +7,23 @@ public class Main {
         generateGUI();
     }
  
-    private static void generateGUI()
+    private static void generateGUI() 
     {
         JFrame frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
 
+        JFrame contentPane = frame.getContentPane();
         List<JButton> buttons = getButtons(frame);
 
         for (JButton button : buttons) {
-            frame.getContentPane().add(button);
+            button.addActionListener(new PageActionListener(value));
+            contentPane.add(button);
         }
-
+         
         frame.setVisible(true);
     }
+
 
     private static List<JButton> getButtons(JFrame frame) {
 
@@ -34,4 +37,18 @@ public class Main {
 
     }
 
+    private class ButtonActionListener implements ActionListener {
+        private int value;
+
+        public ButtonActionListener(int value) {
+            this.value = value;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            JButton chosenButton = e.getSource();
+            int value = chosenButton.getText();
+        }
+    }
+
 }
+
