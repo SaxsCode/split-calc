@@ -1,31 +1,35 @@
 import javax.swing.*;
 import java.util.*;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class Main {
+public class Main implements ActionListener {
 
     public static void main(String[] args) {
-        generateGUI();
+        Main calculator = new Main();
+        calculator.generateGUI();
     }
  
-    private static void generateGUI() 
+    private void generateGUI()
     {
         JFrame frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300,300);
+        frame.setLayout(new FlowLayout());
 
-        JFrame contentPane = frame.getContentPane();
         List<JButton> buttons = getButtons(frame);
 
         for (JButton button : buttons) {
-            button.addActionListener(new PageActionListener(value));
-            contentPane.add(button);
+            button.addActionListener(this);
+            frame.add(button);
         }
          
+        frame.setSize(300,300);
         frame.setVisible(true);
     }
 
 
-    private static List<JButton> getButtons(JFrame frame) {
+    private List<JButton> getButtons(JFrame frame) {
 
         List<JButton> buttons = new ArrayList<>();
 
@@ -33,22 +37,16 @@ public class Main {
             buttons.add(new JButton(Integer.toString(number)));
         }
 
+        String[] operators = { "=" ,"+", "-", "/", "*", "C" };
+
+        for (String operator : operators) {
+            buttons.add(new JButton(operator));
+        }
+
         return buttons;
 
     }
 
-    private class ButtonActionListener implements ActionListener {
-        private int value;
-
-        public ButtonActionListener(int value) {
-            this.value = value;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JButton chosenButton = e.getSource();
-            int value = chosenButton.getText();
-        }
-    }
-
+    public void actionPerformed(ActionEvent event) {}
 }
 
