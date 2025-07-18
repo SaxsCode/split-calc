@@ -6,30 +6,36 @@ import java.awt.event.ActionEvent;
 
 public class Main implements ActionListener {
 
+    JFrame frame;
+
     public static void main(String[] args) {
         Main calculator = new Main();
-        calculator.generateGUI();
+
+        calculator.setFrame();
+        calculator.addButtons();
     }
  
-    private void generateGUI()
+    private void setFrame()
     {
-        JFrame frame = new JFrame("Calculator");
+        frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
+        frame.setSize(300,300);
+        frame.setVisible(true);
 
-        List<JButton> buttons = getButtons(frame);
+        this.frame = frame;
+    }
+
+    private void addButtons() {
+        List<JButton> buttons = this.getButtons();
 
         for (JButton button : buttons) {
             button.addActionListener(this);
-            frame.add(button);
+            this.frame.add(button);
         }
-         
-        frame.setSize(300,300);
-        frame.setVisible(true);
     }
 
-
-    private List<JButton> getButtons(JFrame frame) {
+    private List<JButton> getButtons() {
 
         List<JButton> buttons = new ArrayList<>();
 
