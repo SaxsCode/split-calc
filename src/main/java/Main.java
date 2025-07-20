@@ -7,11 +7,16 @@ import java.awt.event.ActionEvent;
 public class Main implements ActionListener {
 
     JFrame frame;
+    List<Object> pressedButtons;
+    JTextField display;
 
     public static void main(String[] args) {
         Main calculator = new Main();
 
+        calculator.pressedButtons = new ArrayList<>();
+
         calculator.setFrame();
+        calculator.addDisplay();
         calculator.addButtons();
     }
  
@@ -24,6 +29,12 @@ public class Main implements ActionListener {
         frame.setVisible(true);
 
         this.frame = frame;
+    }
+
+    private void addDisplay() {
+        display = new JTextField(16);
+        display.setEditable(false);
+        this.frame.add(display);
     }
 
     private void addButtons() {
@@ -53,6 +64,36 @@ public class Main implements ActionListener {
 
     }
 
-    public void actionPerformed(ActionEvent event) {}
+    public void actionPerformed(ActionEvent event) {
+        JButton sourceButton = (JButton) event.getSource();
+        String buttonValue = sourceButton.getText();
+
+        if(buttonValue.equals("C")) {
+            this.pressedButtons.clear();
+        }
+
+        storePressedButton(buttonValue);
+        display.setText(display.getText() + buttonValue);
+
+    }
+
+    private void storePressedButton(String buttonValue)
+    {
+        try {
+            storeNumber(buttonValue);
+        } catch (Exception exception) {
+            storeOperator(buttonValue);
+        }
+    }
+
+    private void storeNumber(String buttonValue) {
+        int buttonNumber = Integer.parseInt(buttonValue);
+        this.pressedButtons.add(buttonNumber);
+    }
+
+    private void storeOperator(String buttonValue) {
+        this.pressedButtons.add(buttonValue);
+    }
+
 }
 
