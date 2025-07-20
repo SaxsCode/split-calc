@@ -9,6 +9,7 @@ public class Main implements ActionListener {
     JFrame frame;
     List<Object> pressedButtons;
     JTextField display;
+    String[] operators = { "=", "+", "-", "/", "*", "C" };
 
     public static void main(String[] args) {
         Main calculator = new Main();
@@ -19,13 +20,12 @@ public class Main implements ActionListener {
         calculator.addDisplay();
         calculator.addButtons();
     }
- 
-    private void setFrame()
-    {
+
+    private void setFrame() {
         frame = new JFrame("Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
-        frame.setSize(300,300);
+        frame.setSize(300, 300);
         frame.setVisible(true);
 
         this.frame = frame;
@@ -54,8 +54,6 @@ public class Main implements ActionListener {
             buttons.add(new JButton(Integer.toString(number)));
         }
 
-        String[] operators = { "=" ,"+", "-", "/", "*", "C" };
-
         for (String operator : operators) {
             buttons.add(new JButton(operator));
         }
@@ -68,8 +66,10 @@ public class Main implements ActionListener {
         JButton sourceButton = (JButton) event.getSource();
         String buttonValue = sourceButton.getText();
 
-        if(buttonValue.equals("C")) {
-            this.pressedButtons.clear();
+        Boolean isAnOperator = isAnOperator(buttonValue);
+
+        if (isAnOperator) {
+            handleOperator(buttonValue);
         }
 
         storePressedButton(buttonValue);
@@ -77,23 +77,34 @@ public class Main implements ActionListener {
 
     }
 
-    private void storePressedButton(String buttonValue)
-    {
-        try {
-            storeNumber(buttonValue);
-        } catch (Exception exception) {
-            storeOperator(buttonValue);
+    private Boolean isAnOperator(String buttonValue) {
+        if (this.operators == null) {
+            throw new IllegalArgumentException("Array operators can not be empty");
         }
+
+        for (String operator : this.operators) {
+            if (buttonValue.equals(operator)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void storeNumber(String buttonValue) {
-        int buttonNumber = Integer.parseInt(buttonValue);
-        this.pressedButtons.add(buttonNumber);
+    private void handleOperator(String buttonValue) {
+        if (buttonValue.equals("C")) {
+            this.pressedButtons.clear();
+            display.setText("");
+        }
+
+        if (buttonValue.equals("=")) {
+            // perform calculation
+        }
+
     }
 
-    private void storeOperator(String buttonValue) {
+    private void storePressedButton(String buttonValue) {
         this.pressedButtons.add(buttonValue);
     }
 
-}
 
+}
